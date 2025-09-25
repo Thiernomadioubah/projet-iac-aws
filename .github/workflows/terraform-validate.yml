@@ -197,7 +197,7 @@ jobs:
       #     fi
       #     echo "plan_file=tfplan-staging.binary" >> $GITHUB_OUTPUT
       - name: Terraform Apply to Staging
-        run: terraform destroy -input=yes
+        run: terraform destroy -input=false -auto-approve
         # run: terraform apply -input=false ${{ steps.plan_staging.outputs.plan_file }}
   #     - name: récupérer l’IP et formater la sortie
   #       id: get_app_url_staging
