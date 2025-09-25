@@ -6,7 +6,7 @@ terraform {
     key    = "projet1-iac/main/terraform.tfstate" # Chemin du fichier d'état dans le bucket pour ce projet
     region = "eu-west-3"                          # Région de votre backend
 
-    use_lockfile = true # Utilisation du verrouillage de l'état pour éviter les conflits
+    use_lockfile = false # Utilisation du verrouillage de l'état pour éviter les conflits
     encrypt      = true # Assure que l'état est chiffré au repos
   }
 }
