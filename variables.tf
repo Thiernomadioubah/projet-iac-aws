@@ -16,7 +16,7 @@ variable "instance_type" {
 }
 
 variable "project_name" {
-  description = "Nom du projet, utilisé pour le taggage des ressources."
+  description = "Nom du projet, utilisé pour le taggage des ressources. "
   type        = string
   default     = "Projet1-IaC"
 }
