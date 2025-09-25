@@ -18,7 +18,7 @@ permissions:
   actions: read # nécessaire pour télécharger des artefacts
   deployments: write # nécessaire pour interagir avec les environnements GitHub
 
-# jobs:
+jobs:
 #   validate-code:
 #     name: Validate Terraform Code
 #     runs-on: ubuntu-latest
