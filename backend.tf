@@ -7,6 +7,6 @@ terraform {
     region = "eu-west-3"                          # Région de votre backend
 
     use_lockfile = false # Utilisation du verrouillage de l'état pour éviter les conflits
-    encrypt      = true # Assure que l'état est chiffré au repos
+    encrypt      = true  # Assure que l'état est chiffré au repos
   }
 }
