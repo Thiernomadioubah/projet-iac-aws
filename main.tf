@@ -1,3 +1,17 @@
+terraform {
+  required_version = ">=1.5.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "6.14.1"
+    }
+  }
+}
+
+provider "aws" {
+  region = var.aws_region # Région où les ressources du backend seront créées
+}
+
 data "aws_ami" "amazon_linux_2023" {
   most_recent = true
   owners      = ["amazon"]
@@ -19,33 +33,6 @@ data "aws_ami" "amazon_linux_2023" {
 }
 
 
-terraform {
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-      version = "6.14.1"
-    }
-  }
-}
-
-provider "aws" {
-  region  = var.aws_region # Région où les ressources du backend seront créées
-  profile = "projet1-sso"
-}
-
-# Vous pourriez même appeler le module une seconde fois pour créer un autre serveur !
-# module "serveur_web_2" {
-#   source = "./modules/instance_web"
-
-#   ami_id        = data.aws_ami.amazon_linux_2023.id
-#   instance_type = "t3.small" # Type différent
-#   project_name  = var.project_name
-#   environment_tag = "Staging" # Environnement différent
-#   subnet_id       = module.vpc.public_subnets[0] # Utilise le premier sous-réseau public du module VPC
-#   vpc_id          = module.vpc.vpc_id            # Utilise l'ID du VPC créé par le module VPC
-# }
-
-
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
   # Consultez le Terraform Registry pour la dernière version stable et compatible (ex: ~> 5.0)
@@ -59,19 +46,19 @@ module "vpc" {
   public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]                # Exemple de CIDRs pour sous-réseaux publics
 
   enable_nat_gateway = terraform.workspace == "prod" ? true : false # Crée une NAT Gateway pour les sous-réseaux privés (peut engendrer des coûts)
-  single_nat_gateway = true # Utilise une seule NAT Gateway pour toutes les AZs (réduit les coûts)
+  single_nat_gateway = true                                         # Utilise une seule NAT Gateway pour toutes les AZs (réduit les coûts)
 
   enable_dns_hostnames = true
   enable_dns_support   = true
 
   tags = local.common_tags
- 
+
 }
 
 # Appel de notre module local 'instance_web'
 module "serveur_web_1" {
-  # source = "./modules/instance_web" # Chemin vers notre module
-  source = "git::https://github.com/Thiernomadioubah/module-terraform.git?ref=V1.0.0"
+  source = "./modules/instance_web" # Chemin vers notre module
+  # source = "git::https://github.com/Thiernomadioubah/module-terraform.git?ref=V1.0.0"
 
   ami_id          = data.aws_ami.amazon_linux_2023.id
   instance_type   = local.current_instance_config.instance_type # Utilise la variable définie dans le variables.tf racine

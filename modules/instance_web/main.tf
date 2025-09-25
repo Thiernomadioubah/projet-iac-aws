@@ -2,8 +2,8 @@ resource "aws_instance" "web_server" {
   ami           = var.ami_id        // Variable d'entrée du module
   instance_type = var.instance_type // Variable d'entrée du module
 
-# pour mettre l'instance dans le vpc crée
-  subnet_id     = var.subnet_id     // Variable d'entrée du module
+  # pour mettre l'instance dans le vpc crée
+  subnet_id                   = var.subnet_id // Variable d'entrée du module
   associate_public_ip_address = true
 
   metadata_options {
@@ -74,7 +74,7 @@ resource "aws_security_group" "web_sg" {
   name        = "web-sg-${var.project_name}-${lower(var.environment_tag)}"
   description = "Allow HTTP inbound traffic for ${var.project_name} WebServer"
 
-  vpc_id      = var.vpc_id // Variable d'entrée du module(pour le mettre dans le vpc creer)
+  vpc_id = var.vpc_id // Variable d'entrée du module(pour le mettre dans le vpc creer)
 
   ingress {
     description      = "HTTP from anywhere"
