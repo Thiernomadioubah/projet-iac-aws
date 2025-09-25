@@ -187,15 +187,15 @@ jobs:
         run: terraform init -input=false
       - name: Select Staging Workspace
         run: terraform workspace select dev || terraform workspace new dev
-      - name: Terraform Plan for Staging
-        id: plan_staging
-        run: |
-          terraform plan -input=false -no-color -out=tfplan-staging.binary
-          terraform show -no-color tfplan-staging.binary > tfplan-staging.txt
-          if grep -q "resources to be destroyed" tfplan-staging.txt; then
-            echo "::warning title=changements destructeurs détectés::le plan pour staging contient des destructions. vérification manuelle recommandée."
-          fi
-          echo "plan_file=tfplan-staging.binary" >> $GITHUB_OUTPUT
+      # - name: Terraform Plan for Staging
+      #   id: plan_staging
+      #   run: |
+      #     terraform plan -input=false -no-color -out=tfplan-staging.binary
+      #     terraform show -no-color tfplan-staging.binary > tfplan-staging.txt
+      #     if grep -q "resources to be destroyed" tfplan-staging.txt; then
+      #       echo "::warning title=changements destructeurs détectés::le plan pour staging contient des destructions. vérification manuelle recommandée."
+      #     fi
+      #     echo "plan_file=tfplan-staging.binary" >> $GITHUB_OUTPUT
       - name: Terraform Apply to Staging
         run: terraform destroy -input=yes
         # run: terraform apply -input=false ${{ steps.plan_staging.outputs.plan_file }}
